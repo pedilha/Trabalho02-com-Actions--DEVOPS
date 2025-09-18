@@ -65,5 +65,33 @@ public class EstoqueServiceTest {
         assertNotNull(produtos);
         assertTrue(produtos.isEmpty());
     }
-    //teste
+    @Test
+    void deveAdicionarEstoqueAoProdutoComSucesso() {
+        Produto produtoInicial = estoqueService.cadastrarNovoProduto("Borracha", "Borracha branca", 50);
+        Long id = produtoInicial.getId();
+
+        Produto produtoAtualizado = estoqueService.adicionarEstoque(id, 25);
+
+        assertEquals(75, produtoAtualizado.getQuantidade());
+    }
+
+    @Test
+    void deveLancarExcecaoAoAdicionarEstoqueParaIdInexistente() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            estoqueService.adicionarEstoque(999L, 10);
+        });
+
+        assertEquals("Produto com ID 999 não encontrado.", exception.getMessage());
+    }
+
+    @Test
+    void deveLancarExcecaoAoAdicionarQuantidadeNaoPositiva() {
+        Produto produto = estoqueService.cadastrarNovoProduto("Apontador", "Com depósito", 30);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            estoqueService.adicionarEstoque(produto.getId(), 0);
+        });
+
+        assertEquals("A quantidade a ser adicionada deve ser maior que zero.", exception.getMessage());
+    }
 }

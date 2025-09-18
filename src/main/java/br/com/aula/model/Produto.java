@@ -46,4 +46,10 @@ public class Produto {
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
+
+    public void adicionarEstoque(int quantidade) {
+        if (quantidade > 0) {
+            this.quantidade += quantidade;
+        }
+    }
 }
