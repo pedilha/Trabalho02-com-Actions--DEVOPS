@@ -5,6 +5,9 @@ import br.com.aula.model.Produto;
 import br.com.aula.service.EstoqueService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class EstoqueServiceTest {
@@ -43,5 +46,23 @@ public class EstoqueServiceTest {
         });
 
         assertEquals("A quantidade inicial não pode ser negativa.", exception.getMessage());
+    }
+    @Test
+    void deveListarProdutosCadastrados() {
+        estoqueService.cadastrarNovoProduto("Caneta Azul", "Caneta esferográfica", 100);
+        estoqueService.cadastrarNovoProduto("Lápis Preto", "Lápis HB", 200);
+
+        List<Produto> produtos = estoqueService.listarTodosProdutos();
+
+        assertNotNull(produtos);
+        assertEquals(2, produtos.size());
+    }
+
+    @Test
+    void deveRetornarListaVaziaQuandoNaoHouverProdutos() {
+        List<Produto> produtos = estoqueService.listarTodosProdutos();
+
+        assertNotNull(produtos);
+        assertTrue(produtos.isEmpty());
     }
 }
