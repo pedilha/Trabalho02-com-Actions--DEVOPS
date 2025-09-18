@@ -2,9 +2,7 @@ package br.com.aula.repository;
 
 import br.com.aula.model.Produto;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class ProdutoRepository {
@@ -24,5 +22,8 @@ public class ProdutoRepository {
         return estoque.values().stream()
                 .filter(p -> p.getNome().equalsIgnoreCase(nome))
                 .findFirst();
+    }
+    public List<Produto> buscarTodos() {
+        return new ArrayList<>(estoque.values());
     }
 }

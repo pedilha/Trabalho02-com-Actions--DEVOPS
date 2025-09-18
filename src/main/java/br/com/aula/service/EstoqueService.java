@@ -4,6 +4,8 @@ package br.com.aula.service;
 import br.com.aula.model.Produto;
 import br.com.aula.repository.ProdutoRepository;
 
+import java.util.List;
+
 public class EstoqueService {
     private final ProdutoRepository produtoRepository = new ProdutoRepository();
 
@@ -20,5 +22,8 @@ public class EstoqueService {
 
         Produto produtoParaSalvar = new Produto(null, nome, descricao, quantidadeInicial); // ID será gerado no repositório
         return produtoRepository.salvar(produtoParaSalvar);
+    }
+    public List<Produto> listarTodosProdutos() {
+        return produtoRepository.buscarTodos();
     }
 }
