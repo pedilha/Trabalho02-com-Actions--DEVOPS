@@ -10,20 +10,31 @@ public class EstoqueService {
     private final ProdutoRepository produtoRepository = new ProdutoRepository();
 
     public Produto cadastrarNovoProduto(String nome, String descricao, int quantidadeInicial) {
-        // Critério de Aceite: A quantidade inicial não pode ser negativa[cite: 38].
         if (quantidadeInicial < 0) {
             throw new IllegalArgumentException("A quantidade inicial não pode ser negativa.");
         }
 
-        // Critério de Aceite: Não deve ser possível cadastrar um produto com nome duplicado[cite: 37].
         if (produtoRepository.buscarPorNome(nome).isPresent()) {
             throw new IllegalArgumentException("Já existe um produto com o nome informado.");
         }
 
-        Produto produtoParaSalvar = new Produto(null, nome, descricao, quantidadeInicial); // ID será gerado no repositório
+        Produto produtoParaSalvar = new Produto(null, nome, descricao, quantidadeInicial);
         return produtoRepository.salvar(produtoParaSalvar);
     }
     public List<Produto> listarTodosProdutos() {
         return produtoRepository.buscarTodos();
+    }
+
+    public Produto adicionarEstoque(Long produtoId, int quantidadeParaAdicionar) {
+        if (quantidadeParaAdicionar <= 0) {
+            throw new IllegalArgumentException("A quantidade a ser adicionada deve ser maior que zero.");
+        }
+
+        Produto produto = produtoRepository.buscarPorId(produtoId)
+                .orElseThrow(() -> new IllegalArgumentException("Produto com ID " + produtoId + " não encontrado."));
+
+        produto.adicionarEstoque(quantidadeParaAdicionar);
+
+        return produto;
     }
 }
